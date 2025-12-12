@@ -1,0 +1,29 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/sourcetrait_crossplat_windows",
+]
+
+[workspace.dependencies]
+snafu = "0.8"
+sourcetrait_stdx = "1"
+strum = { version = "0.27", features = ["derive"] }
+widestring = "1"
+windows-sys = { version = ">= 0.59, <=0.61", features = [
+    "Win32_Networking_ActiveDirectory",
+    "Win32_NetworkManagement_NetManagement",
+    "Win32_Security",
+    "Win32_Security_Authorization",
+]}
+
+[workspace.dependencies.sourcetrait_crossplat_bridge] 
+path = "../sourcetrait_common/crates/draft/sourcetrait_crossplat_bridge"
+
+[workspace.dependencies.sourcetrait_crossplat_unix] 
+path = "../sourcetrait_common_unix/crates/sourcetrait_crossplat_unix"
+
+[workspace.dependencies.sourcetrait_testing] 
+path = "../sourcetrait_common/crates/sourcetrait_testing"
+
+[workspace.dependencies.sourcetrait_twostr] 
+path = "../sourcetrait_common/crates/sourcetrait_twostr"
