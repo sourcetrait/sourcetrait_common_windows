@@ -1,7 +1,7 @@
 use crate::*;
 
-pub struct LinuxCmdComponentLookup;
-impl cross::CmdComponentLookup for LinuxCmdComponentLookup {
+pub struct WindowsCmdComponentLookup;
+impl cross::CmdComponentLookup for WindowsCmdComponentLookup {
     fn lookup_guess_cli_editor_open_command<P>(&self, _file: P) -> cross::BridgeResult<cross::PathGuess<'_>>
     where
         P: AsRef<Path> + Into<PathBuf>
@@ -23,7 +23,8 @@ impl cross::CmdComponentLookup for LinuxCmdComponentLookup {
     where
         P: AsRef<Path> + Into<PathBuf>
     {
-        let mut cmd = Command::new(CMD_XDG_OPEN);
+        const START: &'static str = "start";
+        let mut cmd = Command::new(START);
         cmd.arg(filepath.as_ref());
         Ok(cmd)
     }

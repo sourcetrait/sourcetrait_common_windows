@@ -1,20 +1,23 @@
 use crate::*;
 
-pub struct LinuxUiComponentLookup;
-impl cross::UiComponentLookup for LinuxUiComponentLookup {
+pub struct WindowsUiComponentLookup;
+impl cross::UiComponentLookup for WindowsUiComponentLookup {
     fn lookup_has_command_line(&self) -> cross::BridgeResult<bool> {
-        match env::var(unix::ENV_TERM) {
-            Ok(_) => Ok(true),
+        const ENV_SESSION_NAME: &'static str = "SESSION_NAME";
+        const VAL_CONSOLE: &'static str = "Console";
+        
+        match env::var(ENV_SESSION_NAME) {
+            Ok(v) if v == VAL_CONSOLE => Ok(true),
+            Ok(_) => Ok(false),
             Err(env::VarError::NotPresent) => Ok(false),
-            Err(source) => cross::BridgeError::err_env_var(unix::ENV_VAR_TERM, source),
+            Err(source) => cross::BridgeError::err_env_var(ENV_SESSION_NAME, source),
         }
     }
 
     fn lookup_has_graphical(&self) -> cross::BridgeResult<bool> {
-        match env::var(ENV_WAYLAND_DISPLAY) {
-            Ok(_) => Ok(true),
-            Err(env::VarError::NotPresent) => Ok(false),
-            Err(source) => cross::BridgeError::err_env_var(ENV_WAYLAND_DISPLAY, source),
-        }
+        // winsys lookup:
+        // 1. GetProcessWindowStation()
+        // 2. GetUserObjectInformation(hWindowStation, UOI_IO, &is_interactive, sizeof(bool), null)
+        todo!()
     }
 }
